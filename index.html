@@ -2,885 +2,1136 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#17120e">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#21140d">
+<meta name="description" content="Cookie Clicker By coolbabyoff - Play the web demo or download the Android version.">
 <title>Cookie Clicker By coolbabyoff</title>
 <style>
 :root {
-    --bg: #17120e;
-    --panel: #251b14;
-    --panel2: #34251a;
-    --gold: #efb94f;
-    --text: #f8eddd;
-    --muted: #b9a58d;
-    --red: #d9574f;
+    --bg: #1a100b;
+    --panel: #2a1b12;
+    --panel-light: #382419;
+    --gold: #e4b65b;
+    --gold-light: #ffe3a0;
+    --text: #fff1d3;
+    --muted: #c3aa87;
+    --border: #68472b;
+    --green: #78d987;
+    --red: #ef7777;
 }
-* { box-sizing: border-box; }
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    background: var(--bg);
+    min-height: 100vh;
+    background: radial-gradient(ellipse at top, #432918 0%, var(--bg) 65%);
     color: var(--text);
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
-button, input { font: inherit; }
+
+button,
+input {
+    font: inherit;
+}
+
 button {
     cursor: pointer;
-    color: var(--text);
-    background: var(--panel2);
-    border: 1px solid #705033;
-    border-radius: 7px;
-    padding: 10px 13px;
 }
-button:hover:not(:disabled) { background: #523921; }
-button:disabled { opacity: .4; cursor: not-allowed; }
+
 header {
+    padding: 24px 16px;
     text-align: center;
-    padding: 25px 12px;
-    background: #100c09;
-    border-bottom: 2px solid #684629;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--border);
 }
+
 header h1 {
-    color: var(--gold);
     margin: 0;
-    font-size: clamp(25px, 5vw, 38px);
+    color: var(--gold-light);
+    font-size: clamp(25px, 5vw, 42px);
+    text-shadow: 0 3px 15px #000;
 }
-header p { color: var(--muted); }
-nav {
+
+header p {
+    margin: 8px 0 0;
+    color: var(--muted);
+}
+
+.stats {
     display: flex;
     justify-content: center;
-    gap: 8px;
     flex-wrap: wrap;
-    padding: 12px;
-    background: #1c1510;
-}
-main {
-    max-width: 1400px;
-    margin: auto;
+    gap: 12px;
     padding: 18px;
 }
-.stats {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    margin-bottom: 18px;
-}
-.stat, .panel {
+
+.stat {
+    min-width: 145px;
+    padding: 14px 18px;
+    text-align: center;
     background: var(--panel);
-    border: 1px solid #4b3524;
-    border-radius: 11px;
-    padding: 17px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
 }
-.stat { text-align: center; }
-.stat strong {
+
+.stat-label {
     display: block;
-    color: var(--gold);
-    font-size: clamp(18px, 3vw, 27px);
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    display: block;
+    margin-top: 6px;
+    color: var(--gold-light);
+    font-size: 23px;
+    font-weight: bold;
     overflow-wrap: anywhere;
-    margin-bottom: 6px;
 }
-.stat span { color: var(--muted); font-size: 13px; }
-.layout {
+
+main {
     display: grid;
-    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
-    gap: 18px;
-    align-items: start;
+    grid-template-columns: minmax(250px, 0.9fr) minmax(300px, 1.1fr);
+    gap: 20px;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 0 18px 150px;
 }
-.panel { margin-bottom: 18px; }
+
+.panel {
+    min-width: 0;
+    padding: 20px;
+    background: rgba(42, 27, 18, 0.94);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
 .panel h2 {
-    color: var(--gold);
-    margin: 0 0 15px;
+    margin-top: 0;
+    color: var(--gold-light);
 }
+
 .cookie-area {
-    min-height: 420px;
     display: flex;
+    min-height: 380px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative;
-    overflow: hidden;
     text-align: center;
+    overflow: hidden;
 }
-#cookie-count {
-    font-size: 25px;
-    font-weight: bold;
-}
-.muted { color: var(--muted); }
-#cookie {
-    width: clamp(170px, 24vw, 240px);
-    height: clamp(170px, 24vw, 240px);
-    border: 9px solid #965626;
+
+.cookie {
+    position: relative;
+    width: clamp(180px, 25vw, 245px);
+    aspect-ratio: 1;
+    border: 8px solid #9b5d2c;
     border-radius: 50%;
     background:
-        radial-gradient(ellipse at 25% 28%, #61321e 0 5%, transparent 6%),
-        radial-gradient(ellipse at 65% 23%, #61321e 0 5%, transparent 6%),
-        radial-gradient(ellipse at 76% 48%, #61321e 0 5%, transparent 6%),
-        radial-gradient(ellipse at 40% 56%, #61321e 0 5%, transparent 6%),
-        radial-gradient(ellipse at 28% 75%, #61321e 0 5%, transparent 6%),
-        radial-gradient(ellipse at 62% 77%, #61321e 0 5%, transparent 6%),
-        radial-gradient(circle at 35% 30%, #f0c47a, #d58b3b 65%, #a45e29);
-    box-shadow: inset -9px -12px 0 #78451c44, 0 10px 25px #0006;
-    transition: transform .08s;
+        radial-gradient(circle at 30% 25%, #d99b52 0 5px, transparent 6px),
+        radial-gradient(circle at 68% 23%, #5d3017 0 9px, transparent 10px),
+        radial-gradient(circle at 43% 44%, #653719 0 8px, transparent 9px),
+        radial-gradient(circle at 73% 57%, #683819 0 7px, transparent 8px),
+        radial-gradient(circle at 28% 70%, #673819 0 9px, transparent 10px),
+        radial-gradient(circle at 55% 78%, #673819 0 6px, transparent 7px),
+        radial-gradient(circle at 55% 35%, #f4c57a 0%, #d9954a 55%, #a65c2b 100%);
+    box-shadow: inset -12px -15px 0 rgba(91, 44, 15, 0.2), 0 15px 35px #0008;
+    transition: transform 0.08s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
-#cookie:active { transform: scale(.94); }
-#cookie:focus-visible {
-    outline: 3px solid white;
-    outline-offset: 6px;
+
+.cookie:hover {
+    filter: brightness(1.08);
 }
-#golden-cookie {
-    display: none;
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #ffdb66;
-    color: #38210a;
-    border: 3px solid #fff1a8;
-    border-radius: 50%;
-    font-size: 11px;
+
+.cookie:active {
+    transform: scale(0.94);
+}
+
+.cookie-count {
+    margin: 20px 0 6px;
+    color: var(--gold-light);
+    font-size: 26px;
     font-weight: bold;
-    box-shadow: 0 0 20px #efb94f;
 }
+
+.muted {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.primary-button,
+.action-button {
+    padding: 11px 15px;
+    color: #241408;
+    font-weight: bold;
+    border: 1px solid #f2d18b;
+    border-radius: 8px;
+    background: linear-gradient(#f7d993, #bd8432);
+    box-shadow: 0 3px 0 #70451e;
+    transition: filter 0.15s, transform 0.15s;
+}
+
+.primary-button:hover,
+.action-button:hover {
+    filter: brightness(1.12);
+}
+
+.primary-button:active,
+.action-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #70451e;
+}
+
+.action-button {
+    width: 100%;
+    text-align: left;
+}
+
+.action-button:disabled {
+    cursor: not-allowed;
+    filter: grayscale(0.7);
+    opacity: 0.5;
+}
+
+.shop-list {
+    display: grid;
+    gap: 10px;
+}
+
 .shop-item {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: 1fr auto;
     align-items: center;
-    gap: 10px;
-    background: var(--panel2);
-    border: 1px solid #4b3625;
-    border-radius: 8px;
+    gap: 12px;
     padding: 12px;
-    margin-bottom: 9px;
+    background: var(--panel-light);
+    border: 1px solid var(--border);
+    border-radius: 10px;
 }
-.shop-item h3 { margin: 0 0 6px; font-size: 16px; }
-.shop-item p { color: var(--muted); font-size: 12px; margin: 4px 0; }
-.shop-item button {
-    max-width: 145px;
-    overflow-wrap: anywhere;
-    font-size: 12px;
+
+.item-name {
+    color: var(--gold-light);
+    font-weight: bold;
 }
-.achievement-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 9px;
-}
-.achievement {
-    background: #30231a;
-    border: 1px solid #4b3625;
-    border-radius: 8px;
-    padding: 12px;
-    min-height: 105px;
-}
-.achievement.unlocked {
-    background: #3b2d19;
-    border-color: #d3a84d;
-}
-.achievement h3 {
-    color: var(--gold);
-    font-size: 13px;
-    margin: 0 0 7px;
-}
-.achievement p {
+
+.item-description {
+    margin-top: 5px;
     color: var(--muted);
     font-size: 12px;
     line-height: 1.4;
+}
+
+.item-count {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+.item-buy {
+    min-width: 115px;
+    text-align: center;
+}
+
+.item-price {
+    margin-bottom: 8px;
+    color: var(--gold-light);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 24px;
+    margin-bottom: 12px;
+}
+
+.section-heading h2 {
     margin: 0;
 }
-.achievement small {
-    display: block;
-    margin-top: 8px;
-    font-weight: bold;
-    color: #9c8a75;
+
+.upgrade-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+    gap: 10px;
 }
-.achievement.unlocked small { color: #9fdf91; }
-.tabs {
+
+.upgrade-item {
     display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-bottom: 14px;
-}
-.tabs button.active {
-    background: var(--gold);
-    color: #24170b;
-}
-.progress {
-    height: 8px;
-    background: #100c09;
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 10px 0;
-}
-#progress-fill {
-    width: 0;
-    height: 100%;
-    background: var(--gold);
-    transition: width .2s;
-}
-#admin-panel { border: 2px solid var(--red); }
-#admin-panel h2 { color: var(--red); }
-#admin-panel h3 { color: var(--gold); margin-top: 22px; }
-#admin-panel input {
-    display: block;
-    width: 100%;
-    max-width: 350px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
     padding: 12px;
-    margin: 10px 0;
-    background: #120e0b;
-    color: white;
-    border: 1px solid #705033;
-    border-radius: 7px;
+    background: var(--panel-light);
+    border: 1px solid var(--border);
+    border-radius: 10px;
 }
-.admin-buttons {
-    display: flex;
-    flex-wrap: wrap;
+
+.upgrade-item strong {
+    color: var(--gold-light);
+}
+
+.upgrade-item small {
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+.upgrade-item .action-button {
+    margin-top: auto;
+    text-align: center;
+    font-size: 12px;
+}
+
+.achievement-summary {
+    margin-bottom: 14px;
+    color: var(--muted);
+}
+
+.achievement-category {
+    margin-top: 20px;
+}
+
+.achievement-category h3 {
+    color: var(--gold-light);
+    font-size: 15px;
+}
+
+.achievement-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
     gap: 8px;
 }
-#admin-error { color: #ff8177; }
-#toast {
+
+.achievement {
+    padding: 10px;
+    background: #1e1510;
+    border: 1px solid #4a3524;
+    border-radius: 8px;
+    opacity: 0.55;
+}
+
+.achievement.unlocked {
+    opacity: 1;
+    border-color: #b78c40;
+    background: #3c2a17;
+}
+
+.achievement strong {
+    display: block;
+    color: var(--gold-light);
+    font-size: 12px;
+}
+
+.achievement small {
+    display: block;
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.golden-cookie {
     position: fixed;
-    left: 50%;
-    bottom: 20px;
-    transform: translate(-50%, 15px);
+    z-index: 900;
+    top: 22%;
+    right: 9%;
+    display: none;
+    width: 68px;
+    height: 68px;
+    border: 4px solid #fff0a1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 25%, #fff3a5, #f6b900 55%, #bd7200);
+    box-shadow: 0 0 30px #ffc400aa;
+    animation: goldenPulse 1s infinite alternate;
+}
+
+@keyframes goldenPulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.12); }
+}
+
+.toast {
+    position: fixed;
+    z-index: 2000;
+    right: 18px;
+    bottom: 18px;
+    max-width: min(350px, calc(100vw - 36px));
+    padding: 13px 16px;
+    color: var(--text);
+    background: #392618;
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    box-shadow: 0 5px 25px #0008;
     opacity: 0;
     pointer-events: none;
-    z-index: 2000;
-    padding: 12px 18px;
-    border: 1px solid var(--gold);
-    border-radius: 8px;
-    background: #30251a;
-    color: white;
-    text-align: center;
-    max-width: 90%;
-    transition: .2s;
+    transform: translateY(10px);
+    transition: opacity 0.2s, transform 0.2s;
 }
-#toast.show {
+
+.toast.show {
     opacity: 1;
-    transform: translate(-50%, 0);
+    transform: translateY(0);
 }
-.portfolio-button {
+
+.bottom-links {
     position: fixed;
-    bottom: 18px;
-    left: 18px;
-    z-index: 1500;
-    padding: 12px 15px;
-    border: 1px solid #c7b7ff;
+    z-index: 1100;
+    bottom: 16px;
+    left: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+    max-width: calc(100vw - 32px);
+}
+
+.bottom-links a,
+.bottom-links .web-demo {
+    display: inline-block;
+    max-width: 100%;
+    padding: 9px 13px;
+    color: var(--gold-light);
+    background: rgba(35, 22, 14, 0.96);
+    border: 1px solid #9a6a36;
     border-radius: 8px;
-    background: #6c5ce7;
-    color: white;
-    text-decoration: none;
-    font-size: 13px;
+    box-shadow: 0 4px 15px #0006;
+    font-size: 12px;
     font-weight: bold;
-    box-shadow: 0 4px 14px #0006;
+    text-decoration: none;
+    overflow-wrap: anywhere;
 }
-.portfolio-button:hover { background: #5848c2; }
-footer {
-    text-align: center;
-    padding: 25px 15px 80px;
+
+.bottom-links .android-link {
+    color: #fff5dc;
+    background: linear-gradient(135deg, #9b6424, #c18a36);
+    border-color: #f1cb79;
+}
+
+.bottom-links a:hover {
+    filter: brightness(1.2);
+    transform: translateY(-1px);
+}
+
+.admin-trigger {
+    position: fixed;
+    z-index: 1200;
+    top: 12px;
+    right: 12px;
+    padding: 8px 11px;
     color: var(--muted);
+    background: #24170f;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.admin-panel {
+    position: fixed;
+    z-index: 1500;
+    top: 50%;
+    left: 50%;
+    display: none;
+    width: min(440px, calc(100vw - 28px));
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 20px;
+    background: #24170f;
+    border: 1px solid var(--gold);
+    border-radius: 14px;
+    box-shadow: 0 20px 80px #000c;
+    transform: translate(-50%, -50%);
+}
+
+.admin-panel h2 {
+    margin-top: 0;
+    color: var(--gold-light);
+}
+
+.admin-panel input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 11px;
+    color: var(--text);
+    background: #120c08;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+}
+
+.admin-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.admin-actions button {
+    min-height: 40px;
+    padding: 8px;
+    color: var(--text);
+    background: #4a301b;
+    border: 1px solid #8b6234;
+    border-radius: 7px;
+}
+
+.admin-actions button:hover {
+    background: #694623;
+}
+
+.admin-status {
+    min-height: 20px;
+    color: var(--gold-light);
     font-size: 13px;
 }
-[hidden] { display: none !important; }
-@media (max-width: 850px) {
-    .layout { grid-template-columns: 1fr; }
-    .achievement-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+footer {
+    padding: 25px 15px 165px;
+    color: var(--muted);
+    text-align: center;
+    font-size: 12px;
 }
-@media (max-width: 480px) {
-    main { padding: 10px; }
-    .stats { grid-template-columns: 1fr; }
-    .achievement-grid { grid-template-columns: 1fr; }
-    .portfolio-button {
+
+@media (max-width: 760px) {
+    main {
+        grid-template-columns: 1fr;
+        padding: 0 12px 160px;
+    }
+
+    .panel {
+        padding: 15px;
+    }
+
+    .cookie-area {
+        min-height: 330px;
+    }
+
+    .stats {
+        gap: 8px;
+        padding: 12px;
+    }
+
+    .stat {
+        flex: 1 1 125px;
+        min-width: 0;
+        padding: 11px;
+    }
+
+    .stat-value {
+        font-size: 19px;
+    }
+
+    .golden-cookie {
+        top: 15%;
+        right: 7%;
+        width: 56px;
+        height: 56px;
+    }
+
+    .bottom-links {
         bottom: 10px;
         left: 10px;
+        gap: 5px;
+    }
+
+    .bottom-links a,
+    .bottom-links .web-demo {
+        padding: 7px 10px;
         font-size: 11px;
-        padding: 10px;
+    }
+
+    .toast {
+        bottom: 12px;
+        right: 12px;
     }
 }
 </style>
 </head>
-
 <body>
 <header>
     <h1>Cookie Clicker By coolbabyoff</h1>
-    <p>Build your cookie empire. Unlock every achievement.</p>
+    <p>Build your cookie empire, unlock upgrades and collect achievements.</p>
 </header>
 
-<nav>
-    <button id="save-button">Save Game</button>
-    <button id="admin-toggle">Admin Panel</button>
-    <button id="reset-button">Reset Game</button>
-</nav>
+<div class="stats">
+    <div class="stat">
+        <span class="stat-label">Cookies</span>
+        <span class="stat-value" id="cookies">0</span>
+    </div>
+    <div class="stat">
+        <span class="stat-label">Cookies Per Second</span>
+        <span class="stat-value" id="cps">0</span>
+    </div>
+    <div class="stat">
+        <span class="stat-label">Total Baked</span>
+        <span class="stat-value" id="totalCookies">0</span>
+    </div>
+    <div class="stat">
+        <span class="stat-label">Total Clicks</span>
+        <span class="stat-value" id="totalClicks">0</span>
+    </div>
+</div>
 
 <main>
-    <section class="stats">
-        <div class="stat">
-            <strong id="total-cookies">0</strong>
-            <span>Total Cookies Baked</span>
+    <section class="panel">
+        <div class="cookie-area">
+            <div class="cookie" id="cookie" role="button" tabindex="0" aria-label="Click to bake cookies"></div>
+            <div class="cookie-count" id="cookieCount">0 cookies</div>
+            <div class="muted" id="clickPower">Each click: 1 cookie</div>
+            <p class="muted">Click the cookie to bake more!</p>
+            <button class="primary-button" id="saveButton">Save Game</button>
         </div>
-        <div class="stat">
-            <strong id="cps">0</strong>
-            <span>Cookies Per Second</span>
+
+        <div class="section-heading">
+            <h2>Upgrades</h2>
         </div>
-        <div class="stat">
-            <strong id="click-power">1</strong>
-            <span>Cookies Per Click</span>
+        <div class="upgrade-grid" id="upgrades"></div>
+
+        <div class="section-heading">
+            <h2>Achievements</h2>
         </div>
+        <div class="achievement-summary" id="achievementSummary">0 / 126 unlocked</div>
+        <div id="achievements"></div>
     </section>
-
-    <div class="layout">
-        <section>
-            <div class="panel cookie-area" id="cookie-area">
-                <button id="golden-cookie">GOLDEN COOKIE</button>
-                <div id="cookie-count">0 cookies</div>
-                <p class="muted">Click the cookie to bake more.</p>
-                <button id="cookie" aria-label="Bake cookies"></button>
-                <p id="cookie-message" class="muted">Your empire starts here.</p>
-            </div>
-
-            <div class="panel">
-                <h2>Statistics</h2>
-                <p>Cookies clicked: <strong id="stat-clicks">0</strong></p>
-                <p>Buildings owned: <strong id="stat-buildings">0</strong></p>
-                <p>Upgrades purchased: <strong id="stat-upgrades">0</strong></p>
-                <p>Golden Cookies collected: <strong id="stat-golden">0</strong></p>
-                <p>Achievements: <strong id="stat-achievements">0 / 126</strong></p>
-                <div class="progress"><div id="progress-fill"></div></div>
-            </div>
-        </section>
-
-        <section>
-            <div class="panel">
-                <h2>Buildings</h2>
-                <div id="building-shop"></div>
-            </div>
-            <div class="panel">
-                <h2>Upgrades</h2>
-                <div id="upgrade-shop"></div>
-            </div>
-        </section>
-    </div>
 
     <section class="panel">
-        <h2>Achievements</h2>
-        <p class="muted" id="achievement-summary">0 of 126 achievements unlocked.</p>
-        <div class="tabs">
-            <button class="active" data-filter="all">All</button>
-            <button data-filter="unlocked">Unlocked</button>
-            <button data-filter="locked">Locked</button>
+        <div class="section-heading">
+            <h2>Buildings</h2>
         </div>
-        <div id="achievement-list" class="achievement-grid"></div>
-    </section>
-
-    <section class="panel" id="admin-panel" hidden>
-        <h2>Admin Panel</h2>
-        <p class="muted">Developer tools and game cheats.</p>
-
-        <div id="admin-login">
-            <label for="admin-password">Admin Password</label>
-            <input id="admin-password" type="password" placeholder="Enter password" autocomplete="off">
-            <button id="admin-login-button">Unlock Admin Panel</button>
-            <p id="admin-error" role="alert"></p>
-        </div>
-
-        <div id="admin-tools" hidden>
-            <h3>Cookie Cheats</h3>
-            <div class="admin-buttons">
-                <button data-add="1000000">Add 1 Million Cookies</button>
-                <button data-add="1000000000">Add 1 Billion Cookies</button>
-                <button data-add="1000000000000">Add 1 Trillion Cookies</button>
-                <button id="cheat-infinite">Set Cookies to 1e100</button>
-            </div>
-
-            <h3>Production Cheats</h3>
-            <div class="admin-buttons">
-                <button id="cheat-click-power">Set Click Power to 1 Million</button>
-                <button id="cheat-multiplier">Set Production Multiplier to 1000x</button>
-                <button id="cheat-buildings">Buy 100 of Every Building</button>
-                <button id="cheat-max-buildings">Set All Buildings to 1000</button>
-            </div>
-
-            <h3>Progress Cheats</h3>
-            <div class="admin-buttons">
-                <button id="cheat-upgrades">Unlock All Upgrades</button>
-                <button id="cheat-achievements">Unlock All Achievements</button>
-                <button id="cheat-finish">Finish the Game</button>
-            </div>
-
-            <h3>Admin Controls</h3>
-            <div class="admin-buttons">
-                <button id="cheat-save">Save Cheat Progress</button>
-                <button id="admin-lock">Lock Admin Panel</button>
-            </div>
-        </div>
+        <p class="muted">Buy buildings to automatically produce cookies.</p>
+        <div class="shop-list" id="buildings"></div>
     </section>
 </main>
 
-<footer>Cookie Clicker By coolbabyoff. Progress is saved in this browser.</footer>
+<button class="golden-cookie" id="goldenCookie" aria-label="Golden Cookie"></button>
 
-<a class="portfolio-button" href="https://coolbabyoff.github.io/coolbabyoff/">Go To coolbabyoff's Portfolio</a>
-<div id="toast" role="status" aria-live="polite"></div>
+<button class="admin-trigger" id="adminTrigger">Admin</button>
+
+<div class="admin-panel" id="adminPanel">
+    <h2>Admin Panel</h2>
+    <div id="adminLogin">
+        <p class="muted">Enter the admin password to continue.</p>
+        <input id="adminPassword" type="password" placeholder="Password" autocomplete="off">
+        <button class="primary-button" id="adminLoginButton">Login</button>
+    </div>
+    <div id="adminControls" hidden>
+        <p class="muted">Development tools</p>
+        <input id="cheatAmount" type="number" min="0" step="any" value="1000000" placeholder="Amount">
+        <div class="admin-actions">
+            <button id="cheatCookies">Add Cookies</button>
+            <button id="cheatClick">Increase Click Power</button>
+            <button id="cheatCps">Multiply Production</button>
+            <button id="cheatBuildings">Add Buildings</button>
+            <button id="cheatUpgrades">Unlock Upgrades</button>
+            <button id="cheatAchievements">Unlock Achievements</button>
+            <button id="cheatFinish">Finish Game</button>
+            <button id="cheatSave">Save Game</button>
+            <button id="cheatReset">Reset Game</button>
+            <button id="adminLogout">Logout</button>
+        </div>
+    </div>
+    <p class="admin-status" id="adminStatus"></p>
+    <button class="action-button" id="closeAdmin" style="margin-top:12px;text-align:center">Close</button>
+</div>
+
+<div class="bottom-links">
+    <span class="web-demo">Web Demo</span>
+    <a class="android-link" href="https://github.com/coolbabyoff/cookiesclickerandroid/releases/">Download For Android</a>
+    <a href="https://coolbabyoff.github.io/coolbabyoff/">Go To coolbabyoff's Portfolio</a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+    Cookie Clicker By coolbabyoff · Web Demo
+</footer>
 
 <script>
-"use strict";
-
 const CHEAT_PASSWORD = "CBO_123";
-const SAVE_KEY = "coolbabyoff_cookie_clicker_v4";
+const SAVE_KEY = "coolbabyoff_cookie_clicker_v3";
 
-const buildings = [
-    { id: "cursor", name: "Cursor", cost: 15, cps: 0.1, desc: "Clicks cookies automatically." },
-    { id: "grandma", name: "Grandma", cost: 100, cps: 1, desc: "A helpful cookie baker." },
-    { id: "farm", name: "Farm", cost: 1100, cps: 8, desc: "Grows cookie plants." },
-    { id: "mine", name: "Mine", cost: 12000, cps: 47, desc: "Mines cookie dough." },
-    { id: "factory", name: "Factory", cost: 130000, cps: 260, desc: "Mass-produces cookies." },
-    { id: "bank", name: "Bank", cost: 1400000, cps: 1400, desc: "Invests in cookie production." },
-    { id: "temple", name: "Temple", cost: 20000000, cps: 7800, desc: "Blesses your cookie empire." },
-    { id: "portal", name: "Portal", cost: 330000000, cps: 44000, desc: "Opens another dimension." },
-    { id: "timeMachine", name: "Time Machine", cost: 5100000000, cps: 260000, desc: "Brings cookies from the future." },
-    { id: "antimatter", name: "Antimatter Condenser", cost: 75000000000, cps: 1600000, desc: "Turns antimatter into cookies." }
+const buildingsData = [
+    { id: "cursor", name: "Cursor", baseCost: 15, cps: 0.1, description: "Automatically clicks the cookie." },
+    { id: "grandma", name: "Grandma", baseCost: 100, cps: 1, description: "A helpful grandma who bakes cookies." },
+    { id: "farm", name: "Farm", baseCost: 1100, cps: 8, description: "Grows cookie ingredients." },
+    { id: "mine", name: "Mine", baseCost: 12000, cps: 47, description: "Extracts delicious cookie dough." },
+    { id: "factory", name: "Factory", baseCost: 130000, cps: 260, description: "Mass-produces cookies." },
+    { id: "bank", name: "Bank", baseCost: 1400000, cps: 1400, description: "Invests in cookie production." },
+    { id: "temple", name: "Temple", baseCost: 20000000, cps: 7800, description: "Blesses your cookie empire." },
+    { id: "portal", name: "Portal", baseCost: 330000000, cps: 44000, description: "Opens a portal to the cookie dimension." },
+    { id: "timeMachine", name: "Time Machine", baseCost: 5100000000, cps: 260000, description: "Brings cookies from the past." },
+    { id: "antimatter", name: "Antimatter Condenser", baseCost: 75000000000, cps: 1600000, description: "Condenses antimatter into cookies." }
 ];
 
-const upgrades = [
-    { id: "strongFingers", name: "Strong Fingers", cost: 100, desc: "Double clicking power.", click: 2 },
-    { id: "betterOven", name: "Better Oven", cost: 500, desc: "Triple clicking power.", click: 3 },
-    { id: "grandmaRecipe", name: "Grandma's Recipe", cost: 1000, desc: "Double Grandma production.", building: "grandma" },
-    { id: "farmFertilizer", name: "Cookie Fertilizer", cost: 5000, desc: "Double Farm production.", building: "farm" },
-    { id: "mineDrills", name: "Cookie Drills", cost: 25000, desc: "Double Mine production.", building: "mine" },
-    { id: "factoryRobots", name: "Factory Robots", cost: 100000, desc: "Double Factory production.", building: "factory" },
-    { id: "goldenOven", name: "Golden Oven", cost: 250000, desc: "Double clicking power again.", click: 2 },
-    { id: "bankInterest", name: "Cookie Interest", cost: 1000000, desc: "Double Bank production.", building: "bank" },
-    { id: "templeBlessing", name: "Temple Blessing", cost: 10000000, desc: "Double Temple production.", building: "temple" },
-    { id: "portalUpgrade", name: "Stable Portal", cost: 100000000, desc: "Double Portal production.", building: "portal" },
-    { id: "timeUpgrade", name: "Time Upgrade", cost: 1000000000, desc: "Double Time Machine production.", building: "timeMachine" },
-    { id: "antimatterUpgrade", name: "Matter Converter", cost: 10000000000, desc: "Double Antimatter production.", building: "antimatter" },
-    { id: "megaClick", name: "Mega Click", cost: 100000000, desc: "Multiply clicking power by five.", click: 5 },
-    { id: "superClick", name: "Super Click", cost: 10000000000, desc: "Multiply clicking power by ten.", click: 10 },
-    { id: "cookieScience", name: "Cookie Science", cost: 100000000000, desc: "Increase all production by 25%.", global: 1.25 }
+const upgradesData = [
+    { id: "strongClick", name: "Stronger Clicks", cost: 100, description: "Double your click power.", type: "click", value: 2 },
+    { id: "betterClick", name: "Golden Finger", cost: 500, description: "Triple your click power.", type: "click", value: 3 },
+    { id: "cursorUpgrade", name: "Improved Cursors", cost: 1000, description: "Double Cursor production.", type: "building", building: "cursor", value: 2 },
+    { id: "grandmaUpgrade", name: "Grandma's Recipe", cost: 5000, description: "Double Grandma production.", type: "building", building: "grandma", value: 2 },
+    { id: "farmUpgrade", name: "Fertile Fields", cost: 25000, description: "Double Farm production.", type: "building", building: "farm", value: 2 },
+    { id: "mineUpgrade", name: "Better Mining", cost: 100000, description: "Double Mine production.", type: "building", building: "mine", value: 2 },
+    { id: "factoryUpgrade", name: "Factory Automation", cost: 500000, description: "Double Factory production.", type: "building", building: "factory", value: 2 },
+    { id: "bankUpgrade", name: "Cookie Investments", cost: 3000000, description: "Double Bank production.", type: "building", building: "bank", value: 2 },
+    { id: "templeUpgrade", name: "Cookie Blessing", cost: 20000000, description: "Double Temple production.", type: "building", building: "temple", value: 2 },
+    { id: "portalUpgrade", name: "Better Portals", cost: 150000000, description: "Double Portal production.", type: "building", building: "portal", value: 2 },
+    { id: "timeUpgrade", name: "Time Acceleration", cost: 2000000000, description: "Double Time Machine production.", type: "building", building: "timeMachine", value: 2 },
+    { id: "antimatterUpgrade", name: "Antimatter Boost", cost: 25000000000, description: "Double Antimatter Condenser production.", type: "building", building: "antimatter", value: 2 },
+    { id: "clickFrenzy", name: "Click Frenzy", cost: 100000000, description: "Multiply click power by five.", type: "click", value: 5 },
+    { id: "cookieAura", name: "Cookie Aura", cost: 1000000000, description: "Increase all production by 25%.", type: "global", value: 1.25 },
+    { id: "ultimateOven", name: "Ultimate Oven", cost: 100000000000, description: "Double all cookie production.", type: "global", value: 2 }
 ];
-
-function createState() {
-    const owned = {};
-    buildings.forEach(b => owned[b.id] = 0);
-    return {
-        cookies: 0,
-        totalCookies: 0,
-        totalClicks: 0,
-        goldenClicks: 0,
-        owned,
-        purchased: [],
-        unlocked: [],
-        clickMultiplier: 1,
-        globalMultiplier: 1,
-        buildingMultipliers: {},
-        lastSaved: Date.now(),
-        playSeconds: 0
-    };
-}
-
-let state = createState();
-let filter = "all";
-let adminUnlocked = false;
-let goldenVisible = false;
-let goldenTimeout = null;
-let toastTimeout = null;
-let audioContext = null;
-
-function fmt(n) {
-    if (!Number.isFinite(n)) return "Infinity";
-    if (n < 1000) return n.toLocaleString("en-US", { maximumFractionDigits: 1 });
-    const units = ["K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc"];
-    const tier = Math.floor(Math.log10(n) / 3);
-    if (tier > units.length) return n.toExponential(2);
-    return (n / Math.pow(1000, tier)).toFixed(2) + " " + units[tier - 1];
-}
-
-function costOf(b) {
-    return Math.ceil(b.cost * Math.pow(1.15, state.owned[b.id] || 0));
-}
-
-function cps() {
-    return buildings.reduce((sum, b) => {
-        return sum + (state.owned[b.id] || 0) * b.cps * (state.buildingMultipliers[b.id] || 1);
-    }, 0) * state.globalMultiplier;
-}
-
-function clickPower() {
-    return state.clickMultiplier;
-}
-
-function addCookies(n) {
-    if (!Number.isFinite(n) || n <= 0) return;
-    state.cookies += n;
-    state.totalCookies += n;
-}
-
-function showToast(message) {
-    const el = document.getElementById("toast");
-    el.textContent = message;
-    el.classList.add("show");
-    clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => el.classList.remove("show"), 2600);
-}
-
-function playSound(frequency) {
-    if (!audioContext) return;
-    try {
-        const oscillator = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        oscillator.frequency.value = frequency || 500;
-        gain.gain.value = 0.025;
-        oscillator.connect(gain);
-        gain.connect(audioContext.destination);
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + 0.06);
-    } catch (_) {}
-}
 
 const achievementCategories = [
     {
         id: "clicks",
-        title: "Click Master",
-        description: "Click cookies",
-        field: "totalClicks",
-        values: Array.from({ length: 21 }, (_, i) => Math.pow(10, i)),
-        suffix: " clicks"
+        name: "Clicking Achievements",
+        description: "Total clicks",
+        targets: Array.from({ length: 21 }, (_, i) => Math.pow(10, i))
     },
     {
         id: "baked",
-        title: "Cookie Legend",
-        description: "Bake cookies in total",
-        field: "totalCookies",
-        values: Array.from({ length: 21 }, (_, i) => Math.pow(10, i)),
-        suffix: " cookies"
+        name: "Cookie Achievements",
+        description: "Cookies baked in total",
+        targets: Array.from({ length: 21 }, (_, i) => Math.pow(10, i))
     },
     {
         id: "production",
-        title: "Production Expert",
-        description: "Reach cookies per second",
-        field: "cps",
-        values: Array.from({ length: 21 }, (_, i) => Math.pow(10, i)),
-        suffix: " cookies per second"
+        name: "Production Achievements",
+        description: "Cookies per second",
+        targets: Array.from({ length: 21 }, (_, i) => Math.pow(10, i))
     },
     {
         id: "buildings",
-        title: "Empire Builder",
-        description: "Own buildings in total",
-        field: "buildings",
-        values: Array.from({ length: 21 }, (_, i) => i + 1),
-        suffix: " buildings"
+        name: "Building Achievements",
+        description: "Total buildings owned",
+        targets: Array.from({ length: 21 }, (_, i) => i + 1)
     },
     {
         id: "upgrades",
-        title: "Research Expert",
-        description: "Purchase upgrades",
-        field: "upgrades",
-        values: Array.from({ length: 21 }, (_, i) => i + 1),
-        suffix: " upgrades"
+        name: "Upgrade Achievements",
+        description: "Upgrades purchased",
+        targets: Array.from({ length: 21 }, (_, i) => i + 1)
     },
     {
         id: "golden",
-        title: "Golden Touch",
-        description: "Collect Golden Cookies",
-        field: "goldenClicks",
-        values: Array.from({ length: 21 }, (_, i) => Math.pow(2, i)),
-        suffix: " Golden Cookies"
+        name: "Golden Cookie Achievements",
+        description: "Golden Cookies clicked",
+        targets: Array.from({ length: 21 }, (_, i) => Math.pow(2, i))
     }
 ];
 
-const achievements = [];
-const romanNumerals = [
-    "I", "II", "III", "IV", "V", "VI", "VII",
-    "VIII", "IX", "X", "XI", "XII", "XIII",
-    "XIV", "XV", "XVI", "XVII", "XVIII", "XIX",
-    "XX", "XXI"
-];
+const achievementsData = achievementCategories.flatMap(category =>
+    category.targets.map((target, index) => ({
+        id: category.id + "_" + index,
+        category: category.id,
+        name: category.name.replace(" Achievements", "") + " " + (index + 1),
+        description: category.description + ": " + formatNumber(target),
+        target
+    }))
+);
 
-achievementCategories.forEach(category => {
-    category.values.forEach((target, index) => {
-        achievements.push({
-            id: category.id + "_" + (index + 1),
-            title: category.title + " " + romanNumerals[index],
-            description: category.description + ": " + fmt(target) + category.suffix + ".",
-            field: category.field,
-            target
-        });
-    });
+let state = {
+    cookies: 0,
+    totalCookies: 0,
+    totalClicks: 0,
+    goldenClicks: 0,
+    buildings: {},
+    upgrades: [],
+    achievements: [],
+    clickPower: 1,
+    globalMultiplier: 1,
+    lastSave: Date.now()
+};
+
+let adminUnlocked = false;
+let toastTimer;
+let goldenTimer;
+let gameFinished = false;
+
+buildingsData.forEach(building => {
+    state.buildings[building.id] = 0;
 });
 
-function metric(field) {
-    if (field === "cps") return cps();
-    if (field === "buildings") {
-        return buildings.reduce((sum, b) => sum + state.owned[b.id], 0);
+function formatNumber(value) {
+    if (!Number.isFinite(value)) return "A lot";
+    if (value < 0) return "-" + formatNumber(-value);
+    if (value < 1000) {
+        if (value >= 100) return Math.floor(value).toLocaleString("en-US");
+        if (value >= 10) return value.toFixed(1).replace(/\.0$/, "");
+        return value.toFixed(2).replace(/\.?0+$/, "");
     }
-    if (field === "upgrades") return state.purchased.length;
-    return state[field] || 0;
+
+    const units = ["K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc"];
+    const tier = Math.floor(Math.log10(value) / 3);
+
+    if (tier > units.length) return value.toExponential(2);
+
+    const scaled = value / Math.pow(1000, tier);
+    return scaled.toFixed(2).replace(/\.?0+$/, "") + units[tier - 1];
+}
+
+function totalBuildings() {
+    return buildingsData.reduce((sum, building) => sum + state.buildings[building.id], 0);
+}
+
+function getBuildingMultiplier(id) {
+    let multiplier = 1;
+    upgradesData.forEach(upgrade => {
+        if (upgrade.type === "building" && upgrade.building === id && state.upgrades.includes(upgrade.id)) {
+            multiplier *= upgrade.value;
+        }
+    });
+    return multiplier;
+}
+
+function getGlobalMultiplier() {
+    let multiplier = state.globalMultiplier;
+    upgradesData.forEach(upgrade => {
+        if (upgrade.type === "global" && state.upgrades.includes(upgrade.id)) {
+            multiplier *= upgrade.value;
+        }
+    });
+    return multiplier;
+}
+
+function getCps() {
+    const buildingCps = buildingsData.reduce((sum, building) => {
+        return sum + state.buildings[building.id] * building.cps * getBuildingMultiplier(building.id);
+    }, 0);
+
+    return buildingCps * getGlobalMultiplier();
+}
+
+function getClickPower() {
+    let power = state.clickPower;
+    upgradesData.forEach(upgrade => {
+        if (upgrade.type === "click" && state.upgrades.includes(upgrade.id)) {
+            power *= upgrade.value;
+        }
+    });
+    return power;
+}
+
+function getBuildingCost(building) {
+    return Math.floor(building.baseCost * Math.pow(1.15, state.buildings[building.id]));
+}
+
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+}
+
+function addCookies(amount) {
+    if (!Number.isFinite(amount) || amount <= 0) return;
+    state.cookies += amount;
+    state.totalCookies += amount;
+    checkAchievements();
+    renderStats();
+}
+
+function clickCookie() {
+    const amount = getClickPower();
+    state.cookies += amount;
+    state.totalCookies += amount;
+    state.totalClicks++;
+    checkAchievements();
+    renderStats();
+}
+
+function buyBuilding(id) {
+    const building = buildingsData.find(item => item.id === id);
+    if (!building) return;
+
+    const cost = getBuildingCost(building);
+    if (state.cookies < cost) {
+        showToast("Not enough cookies!");
+        return;
+    }
+
+    state.cookies -= cost;
+    state.buildings[id]++;
+    checkAchievements();
+    render();
+    renderStats();
+}
+
+function buyUpgrade(id) {
+    const upgrade = upgradesData.find(item => item.id === id);
+    if (!upgrade || state.upgrades.includes(id)) return;
+
+    if (state.cookies < upgrade.cost) {
+        showToast("Not enough cookies!");
+        return;
+    }
+
+    state.cookies -= upgrade.cost;
+    state.upgrades.push(id);
+    checkAchievements();
+    render();
+    renderStats();
+    showToast("Upgrade purchased: " + upgrade.name);
 }
 
 function checkAchievements() {
-    const newlyUnlocked = [];
+    const metrics = {
+        clicks: state.totalClicks,
+        baked: state.totalCookies,
+        production: getCps(),
+        buildings: totalBuildings(),
+        upgrades: state.upgrades.length,
+        golden: state.goldenClicks
+    };
 
-    achievements.forEach(a => {
-        if (state.unlocked.includes(a.id)) return;
-        if (metric(a.field) >= a.target) {
-            state.unlocked.push(a.id);
-            newlyUnlocked.push(a);
+    achievementsData.forEach(achievement => {
+        if (!state.achievements.includes(achievement.id) && metrics[achievement.category] >= achievement.target) {
+            state.achievements.push(achievement.id);
+            showToast("Achievement unlocked: " + achievement.name);
         }
     });
+}
 
-    if (newlyUnlocked.length) {
-        showToast("Achievement unlocked: " + newlyUnlocked[0].title);
-        renderAchievements();
-    }
+function renderStats() {
+    document.getElementById("cookies").textContent = formatNumber(state.cookies);
+    document.getElementById("cps").textContent = formatNumber(getCps());
+    document.getElementById("totalCookies").textContent = formatNumber(state.totalCookies);
+    document.getElementById("totalClicks").textContent = formatNumber(state.totalClicks);
+    document.getElementById("cookieCount").textContent = formatNumber(state.cookies) + " cookies";
+    document.getElementById("clickPower").textContent = "Each click: " + formatNumber(getClickPower()) + " cookies";
 }
 
 function renderBuildings() {
-    const shop = document.getElementById("building-shop");
-    shop.replaceChildren();
+    const container = document.getElementById("buildings");
+    container.innerHTML = "";
 
-    buildings.forEach(b => {
-        const owned = state.owned[b.id] || 0;
-        const cost = costOf(b);
+    buildingsData.forEach(building => {
+        const count = state.buildings[building.id];
+        const cost = getBuildingCost(building);
+        const cps = building.cps * getBuildingMultiplier(building.id) * getGlobalMultiplier();
+
         const item = document.createElement("div");
         item.className = "shop-item";
 
-        const info = document.createElement("div");
-        const title = document.createElement("h3");
-        title.textContent = b.name + " (" + owned + ")";
-        const desc = document.createElement("p");
-        desc.textContent = b.desc;
-        const production = document.createElement("p");
-        production.textContent = fmt(b.cps * (state.buildingMultipliers[b.id] || 1)) + " cookies/sec each";
-        info.append(title, desc, production);
+        const details = document.createElement("div");
+        details.innerHTML =
+            '<div class="item-name"></div>' +
+            '<div class="item-description"></div>' +
+            '<div class="item-count"></div>';
+
+        details.children[0].textContent = building.name;
+        details.children[1].textContent = building.description;
+        details.children[2].textContent = "Owned: " + count + " · " + formatNumber(cps) + " CPS each";
+
+        const buyArea = document.createElement("div");
+        buyArea.className = "item-buy";
+
+        const price = document.createElement("div");
+        price.className = "item-price";
+        price.textContent = formatNumber(cost) + " cookies";
 
         const button = document.createElement("button");
-        button.textContent = fmt(cost) + " cookies";
+        button.className = "action-button";
+        button.textContent = "Buy";
         button.disabled = state.cookies < cost;
-        button.addEventListener("click", () => buyBuilding(b.id));
+        button.addEventListener("click", () => buyBuilding(building.id));
 
-        item.append(info, button);
-        shop.appendChild(item);
+        buyArea.append(price, button);
+        item.append(details, buyArea);
+        container.appendChild(item);
     });
 }
 
 function renderUpgrades() {
-    const shop = document.getElementById("upgrade-shop");
-    shop.replaceChildren();
-    let available = 0;
+    const container = document.getElementById("upgrades");
+    container.innerHTML = "";
 
-    upgrades.forEach(u => {
-        if (state.purchased.includes(u.id)) return;
-        available++;
-
+    upgradesData.forEach(upgrade => {
+        const purchased = state.upgrades.includes(upgrade.id);
         const item = document.createElement("div");
-        item.className = "shop-item";
+        item.className = "upgrade-item";
 
-        const info = document.createElement("div");
-        const title = document.createElement("h3");
-        title.textContent = u.name;
-        const desc = document.createElement("p");
-        desc.textContent = u.desc;
-        info.append(title, desc);
+        const name = document.createElement("strong");
+        name.textContent = upgrade.name;
+
+        const description = document.createElement("small");
+        description.textContent = upgrade.description;
+
+        const price = document.createElement("small");
+        price.textContent = purchased ? "Purchased" : formatNumber(upgrade.cost) + " cookies";
 
         const button = document.createElement("button");
-        button.textContent = fmt(u.cost) + " cookies";
-        button.disabled = state.cookies < u.cost;
-        button.addEventListener("click", () => buyUpgrade(u.id));
+        button.className = "action-button";
+        button.textContent = purchased ? "Purchased" : "Buy Upgrade";
+        button.disabled = purchased || state.cookies < upgrade.cost;
 
-        item.append(info, button);
-        shop.appendChild(item);
+        if (!purchased) button.addEventListener("click", () => buyUpgrade(upgrade.id));
+
+        item.append(name, description, price, button);
+        container.appendChild(item);
     });
-
-    if (!available) shop.textContent = "All available upgrades have been purchased.";
 }
 
 function renderAchievements() {
-    const list = document.getElementById("achievement-list");
-    list.replaceChildren();
+    const container = document.getElementById("achievements");
+    container.innerHTML = "";
 
-    achievements.forEach(a => {
-        const unlocked = state.unlocked.includes(a.id);
-        if (filter === "unlocked" && !unlocked) return;
-        if (filter === "locked" && unlocked) return;
+    achievementCategories.forEach(category => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "achievement-category";
 
-        const card = document.createElement("div");
-        card.className = "achievement" + (unlocked ? " unlocked" : "");
+        const heading = document.createElement("h3");
+        heading.textContent = category.name;
+        wrapper.appendChild(heading);
 
-        const title = document.createElement("h3");
-        title.textContent = a.title;
+        const grid = document.createElement("div");
+        grid.className = "achievement-grid";
 
-        const desc = document.createElement("p");
-        desc.textContent = a.description;
+        achievementsData.filter(item => item.category === category.id).forEach(achievement => {
+            const unlocked = state.achievements.includes(achievement.id);
+            const item = document.createElement("div");
+            item.className = "achievement" + (unlocked ? " unlocked" : "");
 
-        const status = document.createElement("small");
-        status.textContent = unlocked ? "UNLOCKED" : "LOCKED";
+            const name = document.createElement("strong");
+            name.textContent = unlocked ? achievement.name : "Locked Achievement";
 
-        card.append(title, desc, status);
-        list.appendChild(card);
+            const description = document.createElement("small");
+            description.textContent = unlocked ? achievement.description : "Keep playing to unlock this achievement.";
+
+            item.append(name, description);
+            grid.appendChild(item);
+        });
+
+        wrapper.appendChild(grid);
+        container.appendChild(wrapper);
     });
 
-    const count = state.unlocked.length;
-    document.getElementById("achievement-summary").textContent =
-        count + " of " + achievements.length + " achievements unlocked.";
-    document.getElementById("stat-achievements").textContent =
-        count + " / " + achievements.length;
-    document.getElementById("progress-fill").style.width =
-        (count / achievements.length * 100) + "%";
-}
-
-function renderStats() {
-    document.getElementById("total-cookies").textContent = fmt(state.totalCookies);
-    document.getElementById("cookie-count").textContent = fmt(state.cookies) + " cookies";
-    document.getElementById("cps").textContent = fmt(cps());
-    document.getElementById("click-power").textContent = fmt(clickPower());
-    document.getElementById("stat-clicks").textContent = fmt(state.totalClicks);
-    document.getElementById("stat-golden").textContent = fmt(state.goldenClicks);
-    document.getElementById("stat-buildings").textContent =
-        fmt(buildings.reduce((sum, b) => sum + state.owned[b.id], 0));
-    document.getElementById("stat-upgrades").textContent = fmt(state.purchased.length);
+    document.getElementById("achievementSummary").textContent =
+        state.achievements.length + " / " + achievementsData.length + " unlocked";
 }
 
 function render() {
     renderStats();
     renderBuildings();
     renderUpgrades();
-}
-
-function buyBuilding(id) {
-    const b = buildings.find(item => item.id === id);
-    if (!b) return;
-    const cost = costOf(b);
-    if (state.cookies < cost) return;
-
-    state.cookies -= cost;
-    state.owned[id]++;
-    checkAchievements();
-    render();
-}
-
-function applyUpgrade(u) {
-    if (u.click) state.clickMultiplier *= u.click;
-    if (u.building) state.buildingMultipliers[u.building] =
-        (state.buildingMultipliers[u.building] || 1) * 2;
-    if (u.global) state.globalMultiplier *= u.global;
-}
-
-function buyUpgrade(id) {
-    const u = upgrades.find(item => item.id === id);
-    if (!u || state.purchased.includes(id) || state.cookies < u.cost) return;
-
-    state.cookies -= u.cost;
-    state.purchased.push(id);
-    applyUpgrade(u);
-    showToast("Upgrade purchased: " + u.name);
-    checkAchievements();
-    render();
-}
-
-function clickCookie(event) {
-    addCookies(clickPower());
-    state.totalClicks++;
-
-    const area = document.getElementById("cookie-area");
-    const pop = document.createElement("span");
-    pop.textContent = "+" + fmt(clickPower());
-    pop.style.cssText =
-        "position:absolute;pointer-events:none;color:#efb94f;font-weight:bold;animation:floatUp .8s forwards;left:" +
-        Math.max(5, event.offsetX || area.clientWidth / 2) + "px;top:" +
-        Math.max(5, event.offsetY || area.clientHeight / 2) + "px;";
-    area.appendChild(pop);
-    setTimeout(() => pop.remove(), 850);
-
-    checkAchievements();
-    render();
-}
-
-const floatingStyle = document.createElement("style");
-floatingStyle.textContent = "@keyframes floatUp{to{transform:translateY(-55px);opacity:0}}";
-document.head.appendChild(floatingStyle);
-
-function spawnGoldenCookie() {
-    if (goldenVisible) return;
-    goldenVisible = true;
-    const button = document.getElementById("golden-cookie");
-    button.style.display = "block";
-
-    goldenTimeout = setTimeout(() => {
-        goldenVisible = false;
-        button.style.display = "none";
-        scheduleGoldenCookie();
-    }, 10000);
-}
-
-function scheduleGoldenCookie() {
-    setTimeout(spawnGoldenCookie, 30000 + Math.random() * 60000);
-}
-
-function collectGoldenCookie() {
-    if (!goldenVisible) return;
-    clearTimeout(goldenTimeout);
-    goldenVisible = false;
-    document.getElementById("golden-cookie").style.display = "none";
-
-    const reward = Math.max(cps() * 60, state.cookies * 0.1, 13);
-    addCookies(reward);
-    state.goldenClicks++;
-    showToast("Golden Cookie collected! +" + fmt(reward) + " cookies");
-    checkAchievements();
-    render();
-    scheduleGoldenCookie();
+    renderAchievements();
 }
 
 function saveGame(silent = false) {
-    state.lastSaved = Date.now();
+    state.lastSave = Date.now();
+
     try {
         localStorage.setItem(SAVE_KEY, JSON.stringify(state));
-        if (!silent) showToast("Game saved successfully.");
-    } catch (_) {
-        if (!silent) showToast("Unable to save game in this browser.");
+        if (!silent) showToast("Game saved successfully!");
+    } catch (error) {
+        if (!silent) showToast("Unable to save the game in this browser.");
     }
 }
 
 function loadGame() {
     try {
-        const raw = localStorage.getItem(SAVE_KEY);
-        if (!raw) return;
+        const saved = localStorage.getItem(SAVE_KEY);
+        if (!saved) return;
 
-        const saved = JSON.parse(raw);
-        const defaults = createState();
-        state = { ...defaults, ...saved };
-        state.owned = { ...defaults.owned, ...(saved.owned || {}) };
-        state.buildingMultipliers = { ...(saved.buildingMultipliers || {}) };
-        state.purchased = Array.isArray(saved.purchased) ? saved.purchased : [];
-        state.unlocked = Array.isArray(saved.unlocked) ? saved.unlocked : [];
+        const parsed = JSON.parse(saved);
+        if (!parsed || typeof parsed !== "object") return;
 
-        const seconds = Math.max(0, Math.min(28800,
-            (Date.now() - (state.lastSaved || Date.now())) / 1000));
-        const offline = cps() * seconds;
+        state.cookies = Math.max(0, Number(parsed.cookies) || 0);
+        state.totalCookies = Math.max(0, Number(parsed.totalCookies) || 0);
+        state.totalClicks = Math.max(0, Number(parsed.totalClicks) || 0);
+        state.goldenClicks = Math.max(0, Number(parsed.goldenClicks) || 0);
+        state.clickPower = Math.max(1, Number(parsed.clickPower) || 1);
+        state.globalMultiplier = Math.max(1, Number(parsed.globalMultiplier) || 1);
 
-        if (offline > 0) {
-            addCookies(offline);
-            setTimeout(() => showToast(
-                "Welcome back! You earned " + fmt(offline) + " cookies while away."
-            ), 500);
+        if (parsed.buildings && typeof parsed.buildings === "object") {
+            buildingsData.forEach(building => {
+                state.buildings[building.id] = Math.max(0, Math.floor(Number(parsed.buildings[building.id]) || 0));
+            });
         }
-    } catch (_) {
-        state = createState();
+
+        state.upgrades = Array.isArray(parsed.upgrades)
+            ? parsed.upgrades.filter(id => upgradesData.some(upgrade => upgrade.id === id))
+            : [];
+
+        state.achievements = Array.isArray(parsed.achievements)
+            ? parsed.achievements.filter(id => achievementsData.some(achievement => achievement.id === id))
+            : [];
+
+        const lastSave = Number(parsed.lastSave) || Date.now();
+        const offlineSeconds = Math.min(8 * 60 * 60, Math.max(0, (Date.now() - lastSave) / 1000));
+        const offlineCookies = getCps() * offlineSeconds;
+
+        if (offlineCookies > 0) {
+            state.cookies += offlineCookies;
+            state.totalCookies += offlineCookies;
+            showToast("Welcome back! You earned " + formatNumber(offlineCookies) + " cookies while away.");
+        }
+    } catch (error) {
+        showToast("A saved game could not be loaded.");
     }
 }
 
-function unlockAllUpgrades() {
-    upgrades.forEach(u => {
-        if (!state.purchased.includes(u.id)) {
-            state.purchased.push(u.id);
-            applyUpgrade(u);
-        }
-    });
+function spawnGoldenCookie() {
+    clearTimeout(goldenTimer);
+    goldenTimer = setTimeout(() => {
+        const golden = document.getElementById("goldenCookie");
+        golden.style.display = "block";
+    }, 30000 + Math.random() * 60000);
+}
+
+function collectGoldenCookie() {
+    const golden = document.getElementById("goldenCookie");
+    if (golden.style.display !== "block") return;
+
+    golden.style.display = "none";
+    state.goldenClicks++;
+
+    const reward = Math.max(100, getCps() * 60, state.cookies * 0.1);
+    addCookies(reward);
+    checkAchievements();
+    showToast("Golden Cookie! +" + formatNumber(reward) + " cookies");
+    spawnGoldenCookie();
+}
+
+function openAdmin() {
+    document.getElementById("adminPanel").style.display = "block";
+    document.getElementById("adminStatus").textContent = "";
+    document.getElementById("adminPassword").value = "";
+    document.getElementById("adminLogin").hidden = adminUnlocked;
+    document.getElementById("adminControls").hidden = !adminUnlocked;
+}
+
+function closeAdmin() {
+    document.getElementById("adminPanel").style.display = "none";
+}
+
+function requireAdmin(action) {
+    if (!adminUnlocked) {
+        document.getElementById("adminStatus").textContent = "Please log in first.";
+        return;
+    }
+
+    action();
+    checkAchievements();
+    render();
+    saveGame(true);
+}
+
+function getCheatAmount() {
+    const amount = Number(document.getElementById("cheatAmount").value);
+    return Number.isFinite(amount) && amount > 0 ? amount : 1000000;
 }
 
 function unlockAllAchievements() {
-    state.unlocked = achievements.map(a => a.id);
-}
-
-function buyManyBuildings(amount) {
-    buildings.forEach(b => {
-        state.owned[b.id] += amount;
-    });
+    state.achievements = achievementsData.map(achievement => achievement.id);
 }
 
 function finishGame() {
@@ -888,177 +1139,170 @@ function finishGame() {
     state.totalCookies = Math.max(state.totalCookies, 1e100);
     state.totalClicks = Math.max(state.totalClicks, 1e21);
     state.goldenClicks = Math.max(state.goldenClicks, 2 ** 20);
-    state.clickMultiplier = Math.max(state.clickMultiplier, 1e12);
+    state.clickPower = Math.max(state.clickPower, 1e10);
     state.globalMultiplier = Math.max(state.globalMultiplier, 1e6);
 
-    buildings.forEach(b => {
-        state.owned[b.id] = Math.max(state.owned[b.id], 1000);
+    buildingsData.forEach(building => {
+        state.buildings[building.id] = Math.max(state.buildings[building.id], 1000);
     });
 
-    unlockAllUpgrades();
+    state.upgrades = upgradesData.map(upgrade => upgrade.id);
     unlockAllAchievements();
-    render();
-    renderAchievements();
-    saveGame(true);
-    showToast("Game completed. All 126 achievements unlocked.");
+    gameFinished = true;
 }
 
 document.getElementById("cookie").addEventListener("click", clickCookie);
-document.getElementById("golden-cookie").addEventListener("click", collectGoldenCookie);
-document.getElementById("save-button").addEventListener("click", () => saveGame());
-
-document.getElementById("reset-button").addEventListener("click", () => {
-    if (!confirm("Reset your entire game? This cannot be undone.")) return;
-    localStorage.removeItem(SAVE_KEY);
-    state = createState();
-    render();
-    checkAchievements();
-    renderAchievements();
-    showToast("Game reset.");
+document.getElementById("cookie").addEventListener("keydown", event => {
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        clickCookie();
+    }
 });
 
-document.querySelectorAll("[data-filter]").forEach(button => {
-    button.addEventListener("click", () => {
-        filter = button.dataset.filter;
-        document.querySelectorAll("[data-filter]").forEach(b => b.classList.remove("active"));
-        button.classList.add("active");
-        renderAchievements();
+document.getElementById("saveButton").addEventListener("click", () => saveGame());
+document.getElementById("goldenCookie").addEventListener("click", collectGoldenCookie);
+document.getElementById("adminTrigger").addEventListener("click", openAdmin);
+document.getElementById("closeAdmin").addEventListener("click", closeAdmin);
+
+document.getElementById("adminLoginButton").addEventListener("click", () => {
+    const password = document.getElementById("adminPassword").value;
+
+    if (password === CHEAT_PASSWORD) {
+        adminUnlocked = true;
+        document.getElementById("adminLogin").hidden = true;
+        document.getElementById("adminControls").hidden = false;
+        document.getElementById("adminStatus").textContent = "Admin access granted.";
+    } else {
+        document.getElementById("adminStatus").textContent = "Incorrect password.";
+    }
+});
+
+document.getElementById("adminPassword").addEventListener("keydown", event => {
+    if (event.key === "Enter") document.getElementById("adminLoginButton").click();
+});
+
+document.getElementById("cheatCookies").addEventListener("click", () => {
+    requireAdmin(() => {
+        addCookies(getCheatAmount());
+        showToast("Cookies added.");
     });
 });
 
-const adminPanel = document.getElementById("admin-panel");
-const adminLogin = document.getElementById("admin-login");
-const adminTools = document.getElementById("admin-tools");
-const adminPassword = document.getElementById("admin-password");
-const adminError = document.getElementById("admin-error");
-
-document.getElementById("admin-toggle").addEventListener("click", () => {
-    adminPanel.hidden = !adminPanel.hidden;
-    if (!adminPanel.hidden) {
-        adminPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-        if (!adminUnlocked) adminPassword.focus();
-    }
+document.getElementById("cheatClick").addEventListener("click", () => {
+    requireAdmin(() => {
+        state.clickPower *= 2;
+        showToast("Click power doubled.");
+    });
 });
 
-function unlockAdmin() {
-    if (adminPassword.value === CHEAT_PASSWORD) {
-        adminUnlocked = true;
-        adminLogin.hidden = true;
-        adminTools.hidden = false;
-        adminPassword.value = "";
-        adminError.textContent = "";
-        showToast("Admin Panel unlocked.");
-    } else {
-        adminError.textContent = "Incorrect password.";
-        adminPassword.value = "";
-    }
-}
-
-document.getElementById("admin-login-button").addEventListener("click", unlockAdmin);
-
-adminPassword.addEventListener("keydown", event => {
-    if (event.key === "Enter") unlockAdmin();
+document.getElementById("cheatCps").addEventListener("click", () => {
+    requireAdmin(() => {
+        state.globalMultiplier *= Math.max(2, getCheatAmount());
+        showToast("Production multiplier increased.");
+    });
 });
 
-function requireAdmin(action) {
-    if (!adminUnlocked) {
-        showToast("Unlock the Admin Panel first.");
-        return;
-    }
-    action();
-    checkAchievements();
-    render();
-    renderAchievements();
-}
-
-document.querySelectorAll("[data-add]").forEach(button => {
-    button.addEventListener("click", () => requireAdmin(() => {
-        addCookies(Number(button.dataset.add));
-        showToast("Cookies added.");
-    }));
+document.getElementById("cheatBuildings").addEventListener("click", () => {
+    requireAdmin(() => {
+        const amount = Math.min(1000000, Math.floor(getCheatAmount()));
+        buildingsData.forEach(building => {
+            state.buildings[building.id] += amount;
+        });
+        showToast("Buildings added.");
+    });
 });
 
-document.getElementById("cheat-infinite").addEventListener("click", () =>
+document.getElementById("cheatUpgrades").addEventListener("click", () => {
     requireAdmin(() => {
-        state.cookies = 1e100;
-        state.totalCookies = Math.max(state.totalCookies, 1e100);
-        showToast("Cookie balance increased.");
-    })
-);
-
-document.getElementById("cheat-click-power").addEventListener("click", () =>
-    requireAdmin(() => {
-        state.clickMultiplier = 1000000;
-        showToast("Click power set to one million.");
-    })
-);
-
-document.getElementById("cheat-multiplier").addEventListener("click", () =>
-    requireAdmin(() => {
-        state.globalMultiplier = 1000;
-        showToast("Production multiplier set to 1000x.");
-    })
-);
-
-document.getElementById("cheat-buildings").addEventListener("click", () =>
-    requireAdmin(() => {
-        buyManyBuildings(100);
-        showToast("Added 100 of every building.");
-    })
-);
-
-document.getElementById("cheat-max-buildings").addEventListener("click", () =>
-    requireAdmin(() => {
-        buildings.forEach(b => state.owned[b.id] = 1000);
-        showToast("All buildings set to 1000.");
-    })
-);
-
-document.getElementById("cheat-upgrades").addEventListener("click", () =>
-    requireAdmin(() => {
-        unlockAllUpgrades();
+        state.upgrades = upgradesData.map(upgrade => upgrade.id);
         showToast("All upgrades unlocked.");
-    })
-);
+    });
+});
 
-document.getElementById("cheat-achievements").addEventListener("click", () =>
+document.getElementById("cheatAchievements").addEventListener("click", () => {
     requireAdmin(() => {
         unlockAllAchievements();
-        showToast("All achievements unlocked.");
-    })
-);
+        showToast("All 126 achievements unlocked.");
+    });
+});
 
-document.getElementById("cheat-finish").addEventListener("click", () =>
-    requireAdmin(finishGame)
-);
+document.getElementById("cheatFinish").addEventListener("click", () => {
+    requireAdmin(() => {
+        finishGame();
+        showToast("Game completed!");
+    });
+});
 
-document.getElementById("cheat-save").addEventListener("click", () =>
-    requireAdmin(() => saveGame())
-);
+document.getElementById("cheatSave").addEventListener("click", () => {
+    requireAdmin(() => showToast("Admin save completed."));
+});
 
-document.getElementById("admin-lock").addEventListener("click", () => {
+document.getElementById("cheatReset").addEventListener("click", () => {
+    if (!adminUnlocked) return;
+
+    const confirmed = confirm("Are you sure you want to reset all game progress?");
+    if (!confirmed) return;
+
+    localStorage.removeItem(SAVE_KEY);
+    state = {
+        cookies: 0,
+        totalCookies: 0,
+        totalClicks: 0,
+        goldenClicks: 0,
+        buildings: {},
+        upgrades: [],
+        achievements: [],
+        clickPower: 1,
+        globalMultiplier: 1,
+        lastSave: Date.now()
+    };
+
+    buildingsData.forEach(building => {
+        state.buildings[building.id] = 0;
+    });
+
+    gameFinished = false;
+    render();
+    saveGame(true);
+    showToast("Game progress reset.");
+});
+
+document.getElementById("adminLogout").addEventListener("click", () => {
     adminUnlocked = false;
-    adminLogin.hidden = false;
-    adminTools.hidden = true;
-    adminPassword.value = "";
-    adminError.textContent = "";
-    showToast("Admin Panel locked.");
+    document.getElementById("adminLogin").hidden = false;
+    document.getElementById("adminControls").hidden = true;
+    document.getElementById("adminStatus").textContent = "Logged out.";
 });
 
 loadGame();
 checkAchievements();
 render();
-renderAchievements();
-scheduleGoldenCookie();
+spawnGoldenCookie();
+
+let lastTick = Date.now();
 
 setInterval(() => {
-    addCookies(cps());
-    state.playSeconds++;
-    checkAchievements();
-    render();
+    const now = Date.now();
+    const elapsed = Math.min(5, Math.max(0, (now - lastTick) / 1000));
+    lastTick = now;
+
+    const production = getCps() * elapsed;
+
+    if (production > 0) {
+        state.cookies += production;
+        state.totalCookies += production;
+        checkAchievements();
+    }
+
+    renderStats();
+    renderBuildings();
+    renderUpgrades();
+    document.getElementById("achievementSummary").textContent =
+        state.achievements.length + " / " + achievementsData.length + " unlocked";
 }, 1000);
 
 setInterval(() => saveGame(true), 10000);
+
 window.addEventListener("beforeunload", () => saveGame(true));
 </script>
 </body>
